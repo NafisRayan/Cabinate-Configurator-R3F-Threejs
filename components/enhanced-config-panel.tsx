@@ -59,14 +59,24 @@ export function EnhancedConfigPanel({
         <CardContent className="space-y-4">
           <div>
             <Label className="text-xs">Width (mm)</Label>
-            <Slider
-              value={[config.dimensions.width]}
-              onValueChange={([value]) => updateDimension("width", value)}
-              min={100}
-              max={2000}
-              step={10}
-              className="mt-2"
-            />
+            <div className="flex items-center gap-2">
+              <Slider
+                value={[config.dimensions.width]}
+                onValueChange={([value]) => updateDimension("width", value)}
+                min={100}
+                max={800}
+                step={10}
+                className="mt-2"
+              />
+              <Input
+                type="number"
+                value={config.dimensions.width}
+                onChange={(e) => updateDimension("width", Number(e.target.value))}
+                className="text-xs"
+                min={100}
+                max={800}
+              />
+            </div>
             <div className="text-xs text-gray-500 mt-1">
               {config.dimensions.width}mm (Base thickness: {config.thickness.base}mm)
             </div>
@@ -74,29 +84,49 @@ export function EnhancedConfigPanel({
 
           <div>
             <Label className="text-xs">Depth (mm)</Label>
-            <Slider
-              value={[config.dimensions.depth]}
-              onValueChange={([value]) => updateDimension("depth", value)}
-              min={100}
-              max={1200}
-              step={10}
-              className="mt-2"
-            />
+            <div className="flex items-center gap-2">
+              <Slider
+                value={[config.dimensions.depth]}
+                onValueChange={([value]) => updateDimension("depth", value)}
+                min={100}
+                max={600}
+                step={10}
+                className="mt-2"
+              />
+              <Input
+                type="number"
+                value={config.dimensions.depth}
+                onChange={(e) => updateDimension("depth", Number(e.target.value))}
+                className="text-xs"
+                min={100}
+                max={600}
+              />
+            </div>
             <div className="text-xs text-gray-500 mt-1">{config.dimensions.depth}mm</div>
           </div>
 
           <div>
             <Label className="text-xs">Height (mm)</Label>
-            <Slider
-              value={[config.dimensions.height]}
-              onValueChange={([value]) => updateDimension("height", value)}
-              min={35}
-              max={150}
-              step={5}
-              className="mt-2"
-            />
+            <div className="flex items-center gap-2">
+              <Slider
+                value={[config.dimensions.height]}
+                onValueChange={([value]) => updateDimension("height", value)}
+                min={20}
+                max={100}
+                step={5}
+                className="mt-2"
+              />
+              <Input
+                type="number"
+                value={config.dimensions.height}
+                onChange={(e) => updateDimension("height", Number(e.target.value))}
+                className="text-xs"
+                min={20}
+                max={100}
+              />
+            </div>
             <div className="text-xs text-gray-500 mt-1">
-              {config.dimensions.height}mm (min: 35mm, recommended: 40mm+)
+              {config.dimensions.height}mm (min: 20mm, recommended: 40mm+)
             </div>
           </div>
 
@@ -136,7 +166,7 @@ export function EnhancedConfigPanel({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">Dividers (Thickness: {config.thickness.dividers}mm)</CardTitle>
+          <CardTitle className="text-sm">Dividers (Thickness: 5mm)</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
@@ -153,20 +183,40 @@ export function EnhancedConfigPanel({
             {config.dividers.horizontal.map((position, index) => (
               <div key={index} className="flex items-center gap-2">
                 <GripVertical className="w-3 h-3 text-gray-400" />
-                <Input
-                  type="number"
-                  value={position}
-                  onChange={(e) => {
-                    const newHorizontal = [...config.dividers.horizontal]
-                    newHorizontal[index] = Number(e.target.value)
-                    onUpdateConfig({
-                      dividers: { ...config.dividers, horizontal: newHorizontal },
-                    })
-                  }}
-                  className="text-xs"
-                  min={10}
-                  max={config.dimensions.depth - 10}
-                />
+                <div className="flex-1">
+                  <Label className="text-xs">Position (mm)</Label>
+                  <div className="flex items-center gap-2">
+                    <Slider
+                      value={[position]}
+                      onValueChange={([value]) => {
+                        const newHorizontal = [...config.dividers.horizontal]
+                        newHorizontal[index] = value
+                        onUpdateConfig({
+                          dividers: { ...config.dividers, horizontal: newHorizontal },
+                        })
+                      }}
+                      min={10}
+                      max={config.dimensions.depth - 10}
+                      step={1}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      value={position}
+                      onChange={(e) => {
+                        const newHorizontal = [...config.dividers.horizontal]
+                        newHorizontal[index] = Number(e.target.value)
+                        onUpdateConfig({
+                          dividers: { ...config.dividers, horizontal: newHorizontal },
+                        })
+                      }}
+                      className="text-xs w-16"
+                      min={10}
+                      max={config.dimensions.depth - 10}
+                    />
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">{position}mm from front</div>
+                </div>
                 <Button size="sm" variant="outline" onClick={() => onRemoveDivider("horizontal", index)}>
                   <Trash2 className="w-3 h-3" />
                 </Button>
@@ -184,20 +234,40 @@ export function EnhancedConfigPanel({
             {config.dividers.vertical.map((position, index) => (
               <div key={index} className="flex items-center gap-2">
                 <GripVertical className="w-3 h-3 text-gray-400" />
-                <Input
-                  type="number"
-                  value={position}
-                  onChange={(e) => {
-                    const newVertical = [...config.dividers.vertical]
-                    newVertical[index] = Number(e.target.value)
-                    onUpdateConfig({
-                      dividers: { ...config.dividers, vertical: newVertical },
-                    })
-                  }}
-                  className="text-xs"
-                  min={10}
-                  max={config.dimensions.width - 10}
-                />
+                <div className="flex-1">
+                  <Label className="text-xs">Position (mm)</Label>
+                  <div className="flex items-center gap-2">
+                    <Slider
+                      value={[position]}
+                      onValueChange={([value]) => {
+                        const newVertical = [...config.dividers.vertical]
+                        newVertical[index] = value
+                        onUpdateConfig({
+                          dividers: { ...config.dividers, vertical: newVertical },
+                        })
+                      }}
+                      min={10}
+                      max={config.dimensions.width - 10}
+                      step={1}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      value={position}
+                      onChange={(e) => {
+                        const newVertical = [...config.dividers.vertical]
+                        newVertical[index] = Number(e.target.value)
+                        onUpdateConfig({
+                          dividers: { ...config.dividers, vertical: newVertical },
+                        })
+                      }}
+                      className="text-xs w-16"
+                      min={10}
+                      max={config.dimensions.width - 10}
+                    />
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">{position}mm from left</div>
+                </div>
                 <Button size="sm" variant="outline" onClick={() => onRemoveDivider("vertical", index)}>
                   <Trash2 className="w-3 h-3" />
                 </Button>

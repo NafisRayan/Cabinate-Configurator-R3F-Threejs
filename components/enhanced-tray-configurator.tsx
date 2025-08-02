@@ -7,8 +7,6 @@ import { TrayScene } from "./tray-scene"
 import { EnhancedConfigPanel } from "./enhanced-config-panel"
 import { ViewControls } from "./view-controls"
 import { EnhancedMaterialPanel } from "./enhanced-material-panel"
-import { EnhancedModulePanel } from "./enhanced-module-panel"
-import { ObjectPropertiesPanel } from "./object-properties-panel"
 import { ExportPanel } from "./export-panel"
 import { DesignOverview } from "./design-overview"
 import { BlenderControls } from "./blender-controls"
@@ -18,6 +16,8 @@ import { Badge } from "@/components/ui/badge"
 import { Save, FolderOpen, Plus } from "lucide-react"
 import type { TrayConfig, Module, ViewMode, SavedDesign, TransformMode } from "@/types/tray-types"
 import { DesignManager } from "@/utils/design-manager"
+import { FloatingModuleMenu } from "./floating-module-menu"
+import { ModuleListWithSelectPlace } from "./module-list-with-select-place"
 
 const defaultConfig: TrayConfig = {
   dimensions: { width: 300, depth: 200, height: 40 },
@@ -48,6 +48,7 @@ export function EnhancedTrayConfigurator() {
   const [config, setConfig] = useState<TrayConfig>(defaultConfig)
   const [selectedCell, setSelectedCell] = useState<{ row: number; col: number } | null>(null)
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null)
+  const [moduleToPlace, setModuleToPlace] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>("perspective")
   const [transformMode, setTransformMode] = useState<TransformMode>("translate")
   const [isLoading, setIsLoading] = useState(false)
@@ -56,6 +57,7 @@ export function EnhancedTrayConfigurator() {
   const [showOverview, setShowOverview] = useState(false)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [showModuleMenu, setShowModuleMenu] = useState(false)
 
   const designManager = DesignManager.getInstance()
 
@@ -95,33 +97,26 @@ export function EnhancedTrayConfigurator() {
     }))
   }, [])
 
-  const addModule = useCallback(
-    (module: Module) => {
-      if (!selectedCell) return
+  const addModule = useCallback((module: Module) => {
+    // Add module without requiring cell selection - it will be unplaced initially
+    const moduleWithTransforms = {
+      ...module,
+      cell: { row: -1, col: -1 }, // Unplaced initially
+      position: { x: 0, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+      scale: { x: 1, y: 1, z: 1 },
+      isSelected: false,
+      isHovered: false,
+    }
 
-      // Add default transform properties
-      const moduleWithTransforms = {
-        ...module,
-        position: { x: 0, y: 0, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 },
-        scale: { x: 1, y: 1, z: 1 },
-        isSelected: false,
-        isHovered: false,
-      }
+    setConfig((prev) => ({
+      ...prev,
+      modules: [...prev.modules, moduleWithTransforms],
+    }))
 
-      setConfig((prev) => ({
-        ...prev,
-        modules: [
-          ...prev.modules.filter((m) => !(m.cell.row === selectedCell.row && m.cell.col === selectedCell.col)),
-          moduleWithTransforms,
-        ],
-      }))
-
-      // Auto-select the new module
-      setSelectedModuleId(moduleWithTransforms.id)
-    },
-    [selectedCell],
-  )
+    // Auto-select the new module
+    setSelectedModuleId(moduleWithTransforms.id)
+  }, [])
 
   const removeModule = useCallback(
     (moduleId: string) => {
@@ -132,8 +127,11 @@ export function EnhancedTrayConfigurator() {
       if (selectedModuleId === moduleId) {
         setSelectedModuleId(null)
       }
+      if (moduleToPlace === moduleId) {
+        setModuleToPlace(null)
+      }
     },
-    [selectedModuleId],
+    [selectedModuleId, moduleToPlace],
   )
 
   const updateModule = useCallback((moduleId: string, updates: Partial<Module>) => {
@@ -151,6 +149,7 @@ export function EnhancedTrayConfigurator() {
       const clonedModule: Module = {
         ...moduleToClone,
         id: Math.random().toString(36).substr(2, 9),
+        cell: { row: -1, col: -1 }, // Duplicate as unplaced
         position: {
           x: moduleToClone.position.x + 20,
           y: moduleToClone.position.y,
@@ -173,6 +172,14 @@ export function EnhancedTrayConfigurator() {
       ...prev,
       modules: prev.modules.map((m) => ({ ...m, isHovered: m.id === moduleId })),
     }))
+  }, [])
+
+  const handlePlaceModule = useCallback((moduleId: string, row: number, col: number) => {
+    setConfig((prev) => ({
+      ...prev,
+      modules: prev.modules.map((m) => (m.id === moduleId ? { ...m, cell: { row, col } } : m)),
+    }))
+    setModuleToPlace(null) // Clear placement mode
   }, [])
 
   const selectedModule = config.modules.find((m) => m.id === selectedModuleId) || null
@@ -203,6 +210,7 @@ export function EnhancedTrayConfigurator() {
     setHasUnsavedChanges(false)
     setShowOverview(false)
     setSelectedModuleId(null)
+    setModuleToPlace(null)
   }
 
   const handleNewDesign = () => {
@@ -216,6 +224,7 @@ export function EnhancedTrayConfigurator() {
     setHasUnsavedChanges(false)
     setSelectedCell(null)
     setSelectedModuleId(null)
+    setModuleToPlace(null)
   }
 
   const handleRequestQuote = (designs: SavedDesign[]) => {
@@ -249,8 +258,8 @@ export function EnhancedTrayConfigurator() {
         onTransformModeChange={setTransformMode}
       />
 
-      {/* Left Panel - Configuration */}
-      <div className="w-80 bg-white shadow-lg overflow-y-auto">
+      {/* Left Panel - Configuration - Made Wider */}
+      <div className="w-96 bg-white shadow-lg overflow-y-auto">
         <div className="p-4 border-b space-y-3">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold text-gray-800">Tray Configurator</h1>
@@ -295,17 +304,17 @@ export function EnhancedTrayConfigurator() {
 
         <EnhancedMaterialPanel config={config} onUpdateConfig={updateConfig} />
 
-        <EnhancedModulePanel
-          selectedCell={selectedCell}
-          onAddModule={addModule}
+        <ModuleListWithSelectPlace
+          onAddModule={() => setShowModuleMenu(true)}
           onRemoveModule={removeModule}
           onSelectModule={setSelectedModuleId}
           onDuplicateModule={duplicateModule}
+          onUpdateModule={updateModule}
           modules={config.modules}
           selectedModuleId={selectedModuleId}
+          moduleToPlace={moduleToPlace}
+          onSetModuleToPlace={setModuleToPlace}
         />
-
-        <ObjectPropertiesPanel selectedModule={selectedModule} onUpdateModule={updateModule} />
 
         <ExportPanel config={config} designCode={currentDesign?.designCode} />
       </div>
@@ -324,6 +333,14 @@ export function EnhancedTrayConfigurator() {
           <div className="absolute top-16 left-4 z-10">
             <Badge variant="default">
               {transformMode.toUpperCase()} Mode - {selectedModule.type.replace(/-/g, " ")}
+            </Badge>
+          </div>
+        )}
+
+        {moduleToPlace && (
+          <div className="absolute top-4 right-4 z-10">
+            <Badge variant="outline" className="bg-green-50 text-green-600 animate-pulse">
+              🎯 Click on a green cell to place the module
             </Badge>
           </div>
         )}
@@ -347,6 +364,8 @@ export function EnhancedTrayConfigurator() {
             onSelectModule={setSelectedModuleId}
             onHoverModule={handleModuleHover}
             viewMode={viewMode}
+            moduleToPlace={moduleToPlace}
+            onPlaceModule={handlePlaceModule}
           />
 
           <Grid
@@ -371,6 +390,12 @@ export function EnhancedTrayConfigurator() {
           />
         </Canvas>
       </div>
+      <FloatingModuleMenu
+        isOpen={showModuleMenu}
+        onClose={() => setShowModuleMenu(false)}
+        onAddModule={addModule}
+        selectedCell={null} // No longer requires cell selection
+      />
     </div>
   )
 }

@@ -23,7 +23,7 @@ export function TrayDividers({ config }: TrayDividersProps) {
         <Box
           key={`h-${index}`}
           args={[width - 16, height - 8, dividerThickness]}
-          position={[width / 2, height / 2 + baseThickness, position]}
+          position={[0, height / 2 + baseThickness, position - depth / 2]}
           material={material}
           castShadow
         />
@@ -34,7 +34,7 @@ export function TrayDividers({ config }: TrayDividersProps) {
         <Box
           key={`v-${index}`}
           args={[dividerThickness, height - 8, depth - 16]}
-          position={[position, height / 2 + baseThickness, depth / 2]}
+          position={[position - width / 2, height / 2 + baseThickness, 0]}
           material={material}
           castShadow
         />

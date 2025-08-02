@@ -20,7 +20,7 @@ export function TrayBase({ config }: TrayBaseProps) {
       {/* Base */}
       <Box
         args={[width, baseThickness, depth]}
-        position={[width / 2, baseThickness / 2, depth / 2]}
+        position={[0, baseThickness / 2, 0]}
         material={material}
         castShadow
         receiveShadow
@@ -30,7 +30,7 @@ export function TrayBase({ config }: TrayBaseProps) {
       {/* Front wall */}
       <Box
         args={[width, height, wallThickness]}
-        position={[width / 2, height / 2 + baseThickness, wallThickness / 2]}
+        position={[0, height / 2 + baseThickness, -depth / 2 + wallThickness / 2]}
         material={material}
         castShadow
       />
@@ -38,7 +38,7 @@ export function TrayBase({ config }: TrayBaseProps) {
       {/* Back wall */}
       <Box
         args={[width, height, wallThickness]}
-        position={[width / 2, height / 2 + baseThickness, depth - wallThickness / 2]}
+        position={[0, height / 2 + baseThickness, depth / 2 - wallThickness / 2]}
         material={material}
         castShadow
       />
@@ -46,7 +46,7 @@ export function TrayBase({ config }: TrayBaseProps) {
       {/* Left wall */}
       <Box
         args={[wallThickness, height, depth]}
-        position={[wallThickness / 2, height / 2 + baseThickness, depth / 2]}
+        position={[-width / 2 + wallThickness / 2, height / 2 + baseThickness, 0]}
         material={material}
         castShadow
       />
@@ -54,7 +54,7 @@ export function TrayBase({ config }: TrayBaseProps) {
       {/* Right wall */}
       <Box
         args={[wallThickness, height, depth]}
-        position={[width - wallThickness / 2, height / 2 + baseThickness, depth / 2]}
+        position={[width / 2 - wallThickness / 2, height / 2 + baseThickness, 0]}
         material={material}
         castShadow
       />

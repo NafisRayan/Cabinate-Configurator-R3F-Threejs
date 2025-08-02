@@ -4,9 +4,9 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'App',
-  description: 'Created with Next.js',
-  generator: 'nafisrayan.vercel.app',
+  title: 'CC App',
+  description: 'Created with CC',
+  generator: 'CC.dev',
 }
 
 export default function RootLayout({

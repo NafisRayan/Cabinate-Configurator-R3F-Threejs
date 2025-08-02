@@ -16,6 +16,8 @@ interface TraySceneProps {
   onSelectModule: (moduleId: string | null) => void
   onHoverModule: (moduleId: string | null) => void
   viewMode: ViewMode
+  moduleToPlace: string | null
+  onPlaceModule: (moduleId: string, row: number, col: number) => void
 }
 
 export function TrayScene({
@@ -26,6 +28,8 @@ export function TrayScene({
   onSelectModule,
   onHoverModule,
   viewMode,
+  moduleToPlace,
+  onPlaceModule,
 }: TraySceneProps) {
   const groupRef = useRef<Group>(null)
 
@@ -43,8 +47,8 @@ export function TrayScene({
         cells.push({
           row: i,
           col: j,
-          x: cols[j],
-          z: rows[i],
+          x: cols[j] - width / 2,
+          z: rows[i] - depth / 2,
           width: cols[j + 1] - cols[j],
           depth: rows[i + 1] - rows[i],
         })
@@ -55,6 +59,13 @@ export function TrayScene({
   }, [config.dimensions, config.dividers])
 
   const handleCellClick = (row: number, col: number) => {
+    // If we're placing a module, place it
+    if (moduleToPlace) {
+      onPlaceModule(moduleToPlace, row, col)
+      return
+    }
+
+    // Otherwise, handle normal cell selection
     if (selectedCell?.row === row && selectedCell?.col === col) {
       onCellSelect(null)
     } else {
@@ -72,9 +83,12 @@ export function TrayScene({
       {/* Dividers */}
       <TrayDividers config={config} />
 
-      {/* Interactive Modules */}
+      {/* Interactive Modules - only show placed modules */}
       <InteractiveTrayModules
-        config={config}
+        config={{
+          ...config,
+          modules: config.modules.filter((m) => m.cell.row !== -1 && m.cell.col !== -1),
+        }}
         gridCells={gridCells}
         selectedModuleId={selectedModuleId}
         onSelectModule={onSelectModule}
@@ -87,6 +101,7 @@ export function TrayScene({
           <CellHighlight
             cell={cell}
             isSelected={selectedCell?.row === cell.row && selectedCell?.col === cell.col}
+            isPlacementTarget={!!moduleToPlace}
             onClick={() => handleCellClick(cell.row, cell.col)}
           />
         </group>
