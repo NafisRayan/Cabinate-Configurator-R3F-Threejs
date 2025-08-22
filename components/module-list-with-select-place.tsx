@@ -204,7 +204,7 @@ export function ModuleListWithSelectPlace({
           isReadyToPlace
             ? "border-green-500 bg-green-50 shadow-md"
             : isSelected
-              ? "border-blue-500 bg-blue-50"
+              ? "border-blue-500 bg-blue-50 dark:bg-[hsla(0,0%,11%,1)]"
               : module.isHovered
                 ? "border-accent border-accent-foreground"
                 : "border-border"
@@ -477,8 +477,8 @@ export function ModuleListWithSelectPlace({
                     {unplacedModules.length}
                   </Badge>
                 </div>
-                <div className="space-y-2 p-2 bg-orange-50 rounded-lg border border-orange-200">
-                  <div className="text-xs text-orange-700 mb-2">
+                <div className="space-y-2 p-2 bg-card rounded-lg border border-border">
+                  <div className="text-xs text-muted-foreground mb-2">
                     💡 Click "Place" on a module, then click a cell in the 3D view to place it
                   </div>
                   {unplacedModules.map((module) => renderModuleItem(module, true))}
