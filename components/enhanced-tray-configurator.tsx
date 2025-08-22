@@ -243,10 +243,10 @@ export function EnhancedTrayConfigurator() {
 
   if (showOverview) {
     return (
-      <div className="h-screen bg-gray-100">
-        <div className="p-4 bg-white border-b flex items-center justify-between">
+      <div className="h-screen bg-background">
+        <div className="p-4 bg-card border-b border-border flex items-center justify-between text-foreground">
           <h1 className="text-xl font-bold">Design Overview</h1>
-          <Button onClick={() => setShowOverview(false)}>Back to Editor</Button>
+          <Button onClick={() => setShowOverview(false)} variant="outline">Back to Editor</Button>
         </div>
         <DesignOverview onLoadDesign={handleLoadDesign} onRequestQuote={handleRequestQuote} />
       </div>
@@ -266,10 +266,10 @@ export function EnhancedTrayConfigurator() {
       />
 
       {/* Left Panel - Configuration - Made Wider */}
-      <div className="w-96 bg-white shadow-lg overflow-y-auto">
-        <div className="p-4 border-b space-y-3">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-gray-800">Tray Configurator</h1>
+      <div className="w-96 bg-sidebar shadow-lg overflow-y-auto">
+        <div className="p-4 border-b border-sidebar-border space-y-3">
+          <div className="flex items-center justify-between text-sidebar-foreground">
+            <h1 className="text-xl font-bold">Tray Configurator</h1>
             {currentDesign && (
               <Badge variant="secondary">
                 #{currentDesign.designCode} v{currentDesign.version}
@@ -352,7 +352,7 @@ export function EnhancedTrayConfigurator() {
           </div>
         )}
 
-        <Canvas ref={canvasRef} camera={{ position: [400, 300, 400], fov: 50 }} shadows className="bg-gray-50">
+        <Canvas ref={canvasRef} camera={{ position: [400, 300, 400], fov: 50 }} shadows className="bg-background">
           <Environment preset="studio" />
           <ambientLight intensity={0.4} />
           <directionalLight

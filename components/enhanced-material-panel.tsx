@@ -37,7 +37,7 @@ export function EnhancedMaterialPanel({ config, onUpdateConfig }: EnhancedMateri
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <div className="text-xs font-medium mb-2">Base Material</div>
+          <div className="text-xs font-medium mb-2 text-foreground">Base Material</div>
           <div className="grid grid-cols-2 gap-1">
             {colorOptions.map((option) => (
               <Button
@@ -57,7 +57,7 @@ export function EnhancedMaterialPanel({ config, onUpdateConfig }: EnhancedMateri
         </div>
 
         <div>
-          <div className="text-xs font-medium mb-2">Divider Material</div>
+          <div className="text-xs font-medium mb-2 text-foreground">Divider Material</div>
           <div className="grid grid-cols-2 gap-1">
             {colorOptions.map((option) => (
               <Button
@@ -77,7 +77,7 @@ export function EnhancedMaterialPanel({ config, onUpdateConfig }: EnhancedMateri
         </div>
 
         <div>
-          <div className="text-xs font-medium mb-2">Module Material</div>
+          <div className="text-xs font-medium mb-2 text-foreground">Module Material</div>
           <div className="grid grid-cols-2 gap-1">
             {colorOptions.map((option) => (
               <Button
