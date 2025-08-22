@@ -118,7 +118,7 @@ export function ExportPanel({ config, designCode }: ExportPanelProps) {
           Export Specifications
         </Button>
 
-        <div className="text-xs text-gray-500 mt-2">
+        <div className="text-xs text-muted-foreground mt-2">
           <p>• Top/side views: PNG format</p>
           <p>• Specifications: JSON format</p>
           <p>• All exports linked to design #{designCode || "N/A"}</p>

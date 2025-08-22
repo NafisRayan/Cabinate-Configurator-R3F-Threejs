@@ -204,10 +204,10 @@ export function ModuleListWithSelectPlace({
           isReadyToPlace
             ? "border-green-500 bg-green-50 shadow-md"
             : isSelected
-              ? "border-blue-500 bg-blue-50"
+              ? "border-blue-500 bg-blue-50 dark:bg-[hsla(0,0%,11%,1)]"
               : module.isHovered
-                ? "border-gray-400 bg-gray-50"
-                : "border-gray-200"
+                ? "border-accent border-accent-foreground"
+                : "border-border"
         }`}
       >
         {/* Module Header */}
@@ -216,7 +216,7 @@ export function ModuleListWithSelectPlace({
             <div className="flex items-center gap-2 flex-1 cursor-pointer" onClick={() => handleModuleClick(module.id)}>
               <span className="text-sm">{moduleType?.icon}</span>
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-sm truncate">{moduleType?.name}</div>
+                <div className="font-medium text-sm truncate text-foreground">{moduleType?.name}</div>
                 {isUnplaced ? (
                   <div className="text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded mt-1">
                     📍 Not placed - Click "Place" then select a cell
@@ -271,7 +271,7 @@ export function ModuleListWithSelectPlace({
 
         {/* Expanded Properties */}
         {isExpanded && (
-          <div className="border-t bg-white p-3">
+          <div className="border-t bg-card p-3">
             <Tabs defaultValue="transform" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="transform" className="text-xs">
@@ -292,7 +292,7 @@ export function ModuleListWithSelectPlace({
                 {/* Position */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <Label className="text-xs font-medium">Position</Label>
+                    <Label className="text-xs font-medium text-foreground">Position</Label>
                     <Button
                       size="sm"
                       variant="outline"
@@ -305,7 +305,7 @@ export function ModuleListWithSelectPlace({
                   <div className="space-y-2">
                     {["x", "z"].map((axis) => (
                       <div key={axis} className="flex items-center gap-2">
-                        <Label className="text-xs w-4 uppercase">{axis}:</Label>
+                        <Label className="text-xs w-4 uppercase text-foreground">{axis}:</Label>
                         <Slider
                           value={[module.position[axis as "x" | "z"]]}
                           onValueChange={([value]) => updateTransform(module.id, "position", axis as "x" | "z", value)}
@@ -320,7 +320,7 @@ export function ModuleListWithSelectPlace({
                           onChange={(e) =>
                             updateTransform(module.id, "position", axis as "x" | "z", Number(e.target.value))
                           }
-                          className="w-12 h-5 text-xs"
+                          className="w-12 h-5 text-xs bg-secondary"
                         />
                       </div>
                     ))}
@@ -330,7 +330,7 @@ export function ModuleListWithSelectPlace({
                 {/* Scale */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <Label className="text-xs font-medium">Scale</Label>
+                    <Label className="text-xs font-medium text-foreground">Scale</Label>
                     <Button
                       size="sm"
                       variant="outline"
@@ -341,7 +341,7 @@ export function ModuleListWithSelectPlace({
                     </Button>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Label className="text-xs w-4">All:</Label>
+                    <Label className="text-xs w-4 text-foreground">All:</Label>
                     <Slider
                       value={[module.scale.x]}
                       onValueChange={([value]) => {
@@ -363,7 +363,7 @@ export function ModuleListWithSelectPlace({
                           scale: { x: value, y: value, z: value },
                         })
                       }}
-                      className="w-12 h-5 text-xs"
+                      className="w-12 h-5 text-xs bg-secondary"
                       step={0.1}
                     />
                   </div>
@@ -377,7 +377,7 @@ export function ModuleListWithSelectPlace({
                   { key: "height", label: "Height" },
                 ].map(({ key, label }) => (
                   <div key={key} className="flex items-center gap-2">
-                    <Label className="text-xs w-10">{label}:</Label>
+                    <Label className="text-xs w-10 text-foreground">{label}:</Label>
                     <Slider
                       value={[module.dimensions[key as keyof typeof module.dimensions]]}
                       onValueChange={([value]) =>
@@ -394,7 +394,7 @@ export function ModuleListWithSelectPlace({
                       onChange={(e) =>
                         updateDimension(module.id, key as "width" | "depth" | "height", Number(e.target.value))
                       }
-                      className="w-12 h-5 text-xs"
+                      className="w-12 h-5 text-xs bg-secondary"
                     />
                   </div>
                 ))}
@@ -404,7 +404,7 @@ export function ModuleListWithSelectPlace({
                 {/* Module-specific properties */}
                 {(module.type === "ring-tray-grooved" || module.type === "ring-tray-slots") && (
                   <div>
-                    <Label className="text-xs">Slots/Grooves</Label>
+                    <Label className="text-xs text-foreground">Slots/Grooves</Label>
                     <Slider
                       value={[module.properties?.slots || 5]}
                       onValueChange={([value]) => updateProperty(module.id, "slots", value)}
@@ -413,13 +413,13 @@ export function ModuleListWithSelectPlace({
                       step={1}
                       className="mt-1"
                     />
-                    <div className="text-xs text-gray-500 mt-1">{module.properties?.slots || 5} slots</div>
+                    <div className="text-xs text-muted-foreground mt-1">{module.properties?.slots || 5} slots</div>
                   </div>
                 )}
 
                 {["necklace-hooks", "bracelet-bar", "ring-tray-grooved"].includes(module.type) && (
                   <div className="flex items-center justify-between">
-                    <Label className="text-xs">Horizontal</Label>
+                    <Label className="text-xs text-foreground">Horizontal</Label>
                     <Switch
                       checked={module.properties?.orientation === "horizontal"}
                       onCheckedChange={(checked) =>
@@ -431,7 +431,7 @@ export function ModuleListWithSelectPlace({
 
                 {["earring-flap", "removable-tray"].includes(module.type) && (
                   <div className="flex items-center justify-between">
-                    <Label className="text-xs">Removable</Label>
+                    <Label className="text-xs text-foreground">Removable</Label>
                     <Switch
                       checked={module.properties?.isRemovable || false}
                       onCheckedChange={(checked) => updateProperty(module.id, "isRemovable", checked)}
@@ -461,7 +461,7 @@ export function ModuleListWithSelectPlace({
       </CardHeader>
       <CardContent className="space-y-4">
         {modules.length === 0 ? (
-          <div className="text-center py-6 text-gray-400 bg-gray-50 rounded-lg">
+          <div className="text-center py-6 text-muted-foreground bg-muted rounded-lg">
             <div className="text-2xl mb-2">📦</div>
             <div className="text-sm">No modules added yet</div>
             <div className="text-xs mt-1">Click the + button to add modules</div>
@@ -471,14 +471,14 @@ export function ModuleListWithSelectPlace({
             {/* Unplaced Modules */}
             {unplacedModules.length > 0 && (
               <div>
-                <div className="text-xs font-medium mb-2 flex items-center gap-2">
+                <div className="text-xs font-medium mb-2 flex items-center gap-2 text-foreground">
                   <span>Unplaced Modules</span>
                   <Badge variant="outline" className="bg-orange-50 text-orange-600">
                     {unplacedModules.length}
                   </Badge>
                 </div>
-                <div className="space-y-2 p-2 bg-orange-50 rounded-lg border border-orange-200">
-                  <div className="text-xs text-orange-700 mb-2">
+                <div className="space-y-2 p-2 bg-card rounded-lg border border-border">
+                  <div className="text-xs text-muted-foreground mb-2">
                     💡 Click "Place" on a module, then click a cell in the 3D view to place it
                   </div>
                   {unplacedModules.map((module) => renderModuleItem(module, true))}
@@ -489,7 +489,7 @@ export function ModuleListWithSelectPlace({
             {/* Placed Modules */}
             {placedModules.length > 0 && (
               <div>
-                <div className="text-xs font-medium mb-2 flex items-center gap-2">
+                <div className="text-xs font-medium mb-2 flex items-center gap-2 text-foreground">
                   <span>Placed Modules</span>
                   <Badge variant="outline" className="bg-green-50 text-green-600">
                     {placedModules.length}

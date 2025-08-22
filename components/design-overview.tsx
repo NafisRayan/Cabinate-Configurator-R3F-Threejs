@@ -78,7 +78,7 @@ export function DesignOverview({ onLoadDesign, onRequestQuote }: DesignOverviewP
       <Card className="m-4">
         <CardContent className="p-8 text-center">
           <div className="animate-spin w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-500">Loading designs...</p>
+          <p className="text-muted-foreground">Loading designs...</p>
         </CardContent>
       </Card>
     )
@@ -97,7 +97,7 @@ export function DesignOverview({ onLoadDesign, onRequestQuote }: DesignOverviewP
           {/* Search and Filter */}
           <div className="flex gap-2">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 placeholder="Search designs..."
                 value={searchTerm}
@@ -107,7 +107,7 @@ export function DesignOverview({ onLoadDesign, onRequestQuote }: DesignOverviewP
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox id="filter-quoted" checked={filterByQuoted} onCheckedChange={setFilterByQuoted} />
-              <label htmlFor="filter-quoted" className="text-sm">
+              <label htmlFor="filter-quoted" className="text-sm text-foreground">
                 Quote Requested
               </label>
             </div>
@@ -140,12 +140,12 @@ export function DesignOverview({ onLoadDesign, onRequestQuote }: DesignOverviewP
                         <Checkbox checked={isSelected} onCheckedChange={() => toggleDesignSelection(latestDesign.id)} />
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="font-medium">#{history.designCode}</h3>
+                            <h3 className="font-medium text-foreground">#{history.designCode}</h3>
                             <Badge variant="outline">v{latestDesign.version}</Badge>
                             {latestDesign.isQuoteRequested && <Badge variant="secondary">Quote Requested</Badge>}
                           </div>
-                          <p className="text-sm text-gray-600">{latestDesign.name}</p>
-                          <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
+                          <p className="text-sm text-muted-foreground">{latestDesign.name}</p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
                             <span className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
                               {new Date(latestDesign.updatedAt).toLocaleDateString()}
@@ -183,9 +183,9 @@ export function DesignOverview({ onLoadDesign, onRequestQuote }: DesignOverviewP
 
                     {/* Version History */}
                     {history.versions.length > 1 && (
-                      <div className="mt-3 pt-3 border-t">
+                      <div className="mt-3 pt-3 border-t border-border">
                         <details className="text-sm">
-                          <summary className="cursor-pointer text-gray-600 hover:text-gray-800">
+                          <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
                             View all {history.versions.length} versions
                           </summary>
                           <div className="mt-2 space-y-1">
@@ -213,7 +213,7 @@ export function DesignOverview({ onLoadDesign, onRequestQuote }: DesignOverviewP
           </div>
 
           {filteredDesigns.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-muted-foreground">
               {searchTerm || filterByQuoted ? "No designs match your filters" : "No designs found"}
             </div>
           )}

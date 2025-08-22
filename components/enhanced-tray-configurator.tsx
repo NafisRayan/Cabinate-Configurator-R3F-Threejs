@@ -56,10 +56,11 @@ export function EnhancedTrayConfigurator() {
   const [designName, setDesignName] = useState("")
   const [showOverview, setShowOverview] = useState(false)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [showModuleMenu, setShowModuleMenu] = useState(false)
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const orbitControlsRef = useRef<any>(null); // Add this line
+  const [showModuleMenu, setShowModuleMenu] = useState(false);
 
-  const designManager = DesignManager.getInstance()
+  const designManager = DesignManager.getInstance();
 
   // Auto-save functionality
   useEffect(() => {
@@ -231,15 +232,21 @@ export function EnhancedTrayConfigurator() {
     console.log(
       "Quote requested for designs:",
       designs.map((d) => d.designCode),
-    )
-  }
+    );
+  };
+
+  const handleResetView = useCallback(() => {
+    if (orbitControlsRef.current) {
+      orbitControlsRef.current.reset();
+    }
+  }, []);
 
   if (showOverview) {
     return (
-      <div className="h-screen bg-gray-100">
-        <div className="p-4 bg-white border-b flex items-center justify-between">
+      <div className="h-screen bg-background">
+        <div className="p-4 bg-card border-b border-border flex items-center justify-between text-foreground">
           <h1 className="text-xl font-bold">Design Overview</h1>
-          <Button onClick={() => setShowOverview(false)}>Back to Editor</Button>
+          <Button onClick={() => setShowOverview(false)} variant="outline">Back to Editor</Button>
         </div>
         <DesignOverview onLoadDesign={handleLoadDesign} onRequestQuote={handleRequestQuote} />
       </div>
@@ -259,10 +266,10 @@ export function EnhancedTrayConfigurator() {
       />
 
       {/* Left Panel - Configuration - Made Wider */}
-      <div className="w-96 bg-white shadow-lg overflow-y-auto">
-        <div className="p-4 border-b space-y-3">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-gray-800">Tray Configurator</h1>
+      <div className="w-96 bg-sidebar shadow-lg overflow-y-auto">
+        <div className="p-4 border-b border-sidebar-border space-y-3">
+          <div className="flex items-center justify-between text-sidebar-foreground">
+            <h1 className="text-xl font-bold">Tray Configurator</h1>
             {currentDesign && (
               <Badge variant="secondary">
                 #{currentDesign.designCode} v{currentDesign.version}
@@ -321,7 +328,7 @@ export function EnhancedTrayConfigurator() {
 
       {/* Main 3D View */}
       <div className="flex-1 relative">
-        <ViewControls viewMode={viewMode} onViewModeChange={setViewMode} />
+        <ViewControls viewMode={viewMode} onViewModeChange={setViewMode} onResetView={handleResetView} />
 
         {hasUnsavedChanges && (
           <div className="absolute top-4 left-4 z-10">
@@ -345,7 +352,7 @@ export function EnhancedTrayConfigurator() {
           </div>
         )}
 
-        <Canvas ref={canvasRef} camera={{ position: [400, 300, 400], fov: 50 }} shadows className="bg-gray-50">
+        <Canvas ref={canvasRef} camera={{ position: [400, 300, 400], fov: 50 }} shadows className="bg-background">
           <Environment preset="studio" />
           <ambientLight intensity={0.4} />
           <directionalLight
@@ -387,6 +394,8 @@ export function EnhancedTrayConfigurator() {
             enableRotate={viewMode === "perspective"}
             maxPolarAngle={viewMode === "top" ? 0 : Math.PI / 2}
             minPolarAngle={viewMode === "top" ? 0 : 0}
+            makeDefault // Add this line
+            ref={orbitControlsRef} // Add this line
           />
         </Canvas>
       </div>

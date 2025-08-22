@@ -72,12 +72,12 @@ export function EnhancedConfigPanel({
                 type="number"
                 value={config.dimensions.width}
                 onChange={(e) => updateDimension("width", Number(e.target.value))}
-                className="text-xs"
+                className="text-xs bg-secondary"
                 min={100}
                 max={800}
               />
             </div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               {config.dimensions.width}mm (Base thickness: {config.thickness.base}mm)
             </div>
           </div>
@@ -97,12 +97,12 @@ export function EnhancedConfigPanel({
                 type="number"
                 value={config.dimensions.depth}
                 onChange={(e) => updateDimension("depth", Number(e.target.value))}
-                className="text-xs"
+                className="text-xs bg-secondary"
                 min={100}
                 max={600}
               />
             </div>
-            <div className="text-xs text-gray-500 mt-1">{config.dimensions.depth}mm</div>
+            <div className="text-xs text-muted-foreground mt-1">{config.dimensions.depth}mm</div>
           </div>
 
           <div>
@@ -120,12 +120,12 @@ export function EnhancedConfigPanel({
                 type="number"
                 value={config.dimensions.height}
                 onChange={(e) => updateDimension("height", Number(e.target.value))}
-                className="text-xs"
+                className="text-xs bg-secondary"
                 min={20}
                 max={100}
               />
             </div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               {config.dimensions.height}mm (min: 20mm, recommended: 40mm+)
             </div>
           </div>
@@ -182,9 +182,9 @@ export function EnhancedConfigPanel({
             </div>
             {config.dividers.horizontal.map((position, index) => (
               <div key={index} className="flex items-center gap-2">
-                <GripVertical className="w-3 h-3 text-gray-400" />
+                <GripVertical className="w-3 h-3 text-muted-foreground" />
                 <div className="flex-1">
-                  <Label className="text-xs">Position (mm)</Label>
+                  <Label className="text-xs text-foreground">Position (mm)</Label>
                   <div className="flex items-center gap-2">
                     <Slider
                       value={[position]}
@@ -210,12 +210,12 @@ export function EnhancedConfigPanel({
                           dividers: { ...config.dividers, horizontal: newHorizontal },
                         })
                       }}
-                      className="text-xs w-16"
+                      className="text-xs w-16 bg-secondary"
                       min={10}
                       max={config.dimensions.depth - 10}
                     />
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">{position}mm from front</div>
+                  <div className="text-xs text-muted-foreground mt-1">{position}mm from front</div>
                 </div>
                 <Button size="sm" variant="outline" onClick={() => onRemoveDivider("horizontal", index)}>
                   <Trash2 className="w-3 h-3" />
@@ -233,9 +233,9 @@ export function EnhancedConfigPanel({
             </div>
             {config.dividers.vertical.map((position, index) => (
               <div key={index} className="flex items-center gap-2">
-                <GripVertical className="w-3 h-3 text-gray-400" />
+                <GripVertical className="w-3 h-3 text-muted-foreground" />
                 <div className="flex-1">
-                  <Label className="text-xs">Position (mm)</Label>
+                  <Label className="text-xs text-foreground">Position (mm)</Label>
                   <div className="flex items-center gap-2">
                     <Slider
                       value={[position]}
@@ -261,12 +261,12 @@ export function EnhancedConfigPanel({
                           dividers: { ...config.dividers, vertical: newVertical },
                         })
                       }}
-                      className="text-xs w-16"
+                      className="text-xs w-16 bg-secondary"
                       min={10}
                       max={config.dimensions.width - 10}
                     />
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">{position}mm from left</div>
+                  <div className="text-xs text-muted-foreground mt-1">{position}mm from left</div>
                 </div>
                 <Button size="sm" variant="outline" onClick={() => onRemoveDivider("vertical", index)}>
                   <Trash2 className="w-3 h-3" />

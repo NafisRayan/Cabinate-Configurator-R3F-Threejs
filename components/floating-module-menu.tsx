@@ -171,7 +171,7 @@ export function FloatingModuleMenu({ isOpen, onClose, onAddModule }: FloatingMod
             💡 Modules will be added to the sidebar. Drag them to cells to place them.
           </div>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
               placeholder="Search modules..."
               value={searchTerm}
@@ -184,7 +184,7 @@ export function FloatingModuleMenu({ isOpen, onClose, onAddModule }: FloatingMod
           <div className="space-y-4">
             {Object.entries(modulesByCategory).map(([category, categoryModules]) => (
               <div key={category}>
-                <div className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                <div className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                   <span>{category}</span>
                   <Badge variant="outline" className="text-xs">
                     {categoryModules.length}
@@ -196,13 +196,13 @@ export function FloatingModuleMenu({ isOpen, onClose, onAddModule }: FloatingMod
                       key={moduleType.id}
                       variant="outline"
                       onClick={() => addModule(moduleType.id)}
-                      className="w-full text-left justify-start p-3 h-auto hover:bg-blue-50"
+                      className="w-full text-left justify-start p-3 h-auto hover:bg-accent"
                     >
                       <div className="flex items-center gap-3 w-full">
                         <span className="text-lg">{moduleType.icon}</span>
                         <div className="flex-1">
-                          <div className="font-medium text-sm">{moduleType.name}</div>
-                          <div className="text-gray-500 text-xs">{moduleType.description}</div>
+                          <div className="font-medium text-sm text-foreground">{moduleType.name}</div>
+                          <div className="text-muted-foreground text-xs">{moduleType.description}</div>
                         </div>
                       </div>
                     </Button>
@@ -211,7 +211,7 @@ export function FloatingModuleMenu({ isOpen, onClose, onAddModule }: FloatingMod
               </div>
             ))}
             {filteredModules.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 <div className="text-2xl mb-2">🔍</div>
                 <div className="text-sm">No modules found</div>
                 <div className="text-xs mt-1">Try a different search term</div>
