@@ -320,7 +320,7 @@ export function ModuleListWithSelectPlace({
                           onChange={(e) =>
                             updateTransform(module.id, "position", axis as "x" | "z", Number(e.target.value))
                           }
-                          className="w-12 h-5 text-xs"
+                          className="w-12 h-5 text-xs bg-secondary"
                         />
                       </div>
                     ))}
@@ -363,7 +363,7 @@ export function ModuleListWithSelectPlace({
                           scale: { x: value, y: value, z: value },
                         })
                       }}
-                      className="w-12 h-5 text-xs"
+                      className="w-12 h-5 text-xs bg-secondary"
                       step={0.1}
                     />
                   </div>
@@ -394,7 +394,7 @@ export function ModuleListWithSelectPlace({
                       onChange={(e) =>
                         updateDimension(module.id, key as "width" | "depth" | "height", Number(e.target.value))
                       }
-                      className="w-12 h-5 text-xs"
+                      className="w-12 h-5 text-xs bg-secondary"
                     />
                   </div>
                 ))}

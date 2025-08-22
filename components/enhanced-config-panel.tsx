@@ -72,7 +72,7 @@ export function EnhancedConfigPanel({
                 type="number"
                 value={config.dimensions.width}
                 onChange={(e) => updateDimension("width", Number(e.target.value))}
-                className="text-xs"
+                className="text-xs bg-secondary"
                 min={100}
                 max={800}
               />
@@ -97,7 +97,7 @@ export function EnhancedConfigPanel({
                 type="number"
                 value={config.dimensions.depth}
                 onChange={(e) => updateDimension("depth", Number(e.target.value))}
-                className="text-xs"
+                className="text-xs bg-secondary"
                 min={100}
                 max={600}
               />
@@ -120,7 +120,7 @@ export function EnhancedConfigPanel({
                 type="number"
                 value={config.dimensions.height}
                 onChange={(e) => updateDimension("height", Number(e.target.value))}
-                className="text-xs"
+                className="text-xs bg-secondary"
                 min={20}
                 max={100}
               />
@@ -210,7 +210,7 @@ export function EnhancedConfigPanel({
                           dividers: { ...config.dividers, horizontal: newHorizontal },
                         })
                       }}
-                      className="text-xs w-16"
+                      className="text-xs w-16 bg-secondary"
                       min={10}
                       max={config.dimensions.depth - 10}
                     />
@@ -261,7 +261,7 @@ export function EnhancedConfigPanel({
                           dividers: { ...config.dividers, vertical: newVertical },
                         })
                       }}
-                      className="text-xs w-16"
+                      className="text-xs w-16 bg-secondary"
                       min={10}
                       max={config.dimensions.width - 10}
                     />

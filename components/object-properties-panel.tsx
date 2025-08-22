@@ -27,14 +27,14 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-6 text-muted-foreground bg-muted rounded-lg">
+          <div className="text-center py-6 text-gray-500 bg-gray-50 rounded-lg">
             <div className="text-2xl mb-2">🎯</div>
             <div className="text-sm font-medium">Select an Object</div>
             <div className="text-xs mt-1">Click on a module in the 3D view to edit its properties</div>
-            <div className="text-xs mt-2 text-muted-foreground">
-              Use <kbd className="px-1 py-0.5 bg-secondary rounded text-xs">G</kbd> to move,{" "}
-              <kbd className="px-1 py-0.5 bg-secondary rounded text-xs">R</kbd> to rotate,{" "}
-              <kbd className="px-1 py-0.5 bg-secondary rounded text-xs">S</kbd> to scale
+            <div className="text-xs mt-2 text-gray-400">
+              Use <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">G</kbd> to move,{" "}
+              <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">R</kbd> to rotate,{" "}
+              <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">S</kbd> to scale
             </div>
           </div>
         </CardContent>
@@ -81,11 +81,11 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-xs font-medium bg-accent p-2 rounded text-accent-foreground">
+        <div className="text-xs font-medium bg-blue-50 p-2 rounded">
           <div className="flex items-center gap-2">
             <span className="font-semibold">{selectedModule.type.replace(/-/g, " ").toUpperCase()}</span>
           </div>
-          <div className="text-muted-foreground mt-1">
+          <div className="text-gray-600 mt-1">
             Cell: Row {selectedModule.cell.row + 1}, Col {selectedModule.cell.col + 1}
           </div>
         </div>
@@ -110,7 +110,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
             {/* Position */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <Label className="text-xs font-medium text-foreground">Position</Label>
+                <Label className="text-xs font-medium">Position</Label>
                 <Button size="sm" variant="outline" onClick={() => resetTransform("position")} className="h-6 text-xs">
                   Reset
                 </Button>
@@ -118,7 +118,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
               <div className="space-y-2">
                 {["x", "z"].map((axis) => (
                   <div key={axis} className="flex items-center gap-2">
-                    <Label className="text-xs w-4 uppercase text-foreground">{axis}:</Label>
+                    <Label className="text-xs w-4 uppercase">{axis}:</Label>
                     <Slider
                       value={[selectedModule.position[axis as "x" | "z"]]}
                       onValueChange={([value]) => updateTransform("position", axis as "x" | "z", value)}
@@ -141,7 +141,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
             {/* Rotation */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <Label className="text-xs font-medium text-foreground">Rotation (degrees)</Label>
+                <Label className="text-xs font-medium">Rotation (degrees)</Label>
                 <Button size="sm" variant="outline" onClick={() => resetTransform("rotation")} className="h-6 text-xs">
                   Reset
                 </Button>
@@ -149,7 +149,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
               <div className="space-y-2">
                 {["x", "y", "z"].map((axis) => (
                   <div key={axis} className="flex items-center gap-2">
-                    <Label className="text-xs w-4 uppercase text-foreground">{axis}:</Label>
+                    <Label className="text-xs w-4 uppercase">{axis}:</Label>
                     <Slider
                       value={[selectedModule.rotation[axis as "x" | "y" | "z"]]}
                       onValueChange={([value]) => updateTransform("rotation", axis as "x" | "y" | "z", value)}
@@ -172,7 +172,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
             {/* Scale */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <Label className="text-xs font-medium text-foreground">Scale</Label>
+                <Label className="text-xs font-medium">Scale</Label>
                 <Button size="sm" variant="outline" onClick={() => resetTransform("scale")} className="h-6 text-xs">
                   Reset
                 </Button>
@@ -180,7 +180,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
               <div className="space-y-2">
                 {["x", "y", "z"].map((axis) => (
                   <div key={axis} className="flex items-center gap-2">
-                    <Label className="text-xs w-4 uppercase text-foreground">{axis}:</Label>
+                    <Label className="text-xs w-4 uppercase">{axis}:</Label>
                     <Slider
                       value={[selectedModule.scale[axis as "x" | "y" | "z"]]}
                       onValueChange={([value]) => updateTransform("scale", axis as "x" | "y" | "z", value)}
@@ -204,7 +204,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
 
           <TabsContent value="dimensions" className="space-y-4">
             <div>
-              <Label className="text-xs font-medium mb-2 block text-foreground">Dimensions (mm)</Label>
+              <Label className="text-xs font-medium mb-2 block">Dimensions (mm)</Label>
               <div className="space-y-2">
                 {[
                   { key: "width", label: "Width" },
@@ -212,7 +212,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
                   { key: "height", label: "Height" },
                 ].map(({ key, label }) => (
                   <div key={key} className="flex items-center gap-2">
-                    <Label className="text-xs w-12 text-foreground">{label}:</Label>
+                    <Label className="text-xs w-12">{label}:</Label>
                     <Slider
                       value={[selectedModule.dimensions[key as keyof typeof selectedModule.dimensions]]}
                       onValueChange={([value]) => updateDimension(key as "width" | "depth" | "height", value)}
@@ -237,7 +237,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
             {/* Module-specific properties */}
             {(selectedModule.type === "ring-tray-grooved" || selectedModule.type === "ring-tray-slots") && (
               <div>
-                <Label className="text-xs text-foreground">Number of Slots/Grooves</Label>
+                <Label className="text-xs">Number of Slots/Grooves</Label>
                 <Slider
                   value={[selectedModule.properties?.slots || 5]}
                   onValueChange={([value]) => updateProperty("slots", value)}
@@ -246,13 +246,13 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
                   step={1}
                   className="mt-2"
                 />
-                <div className="text-xs text-muted-foreground mt-1">{selectedModule.properties?.slots || 5} slots</div>
+                <div className="text-xs text-gray-500 mt-1">{selectedModule.properties?.slots || 5} slots</div>
               </div>
             )}
 
             {["necklace-hooks", "bracelet-bar", "ring-tray-grooved"].includes(selectedModule.type) && (
               <div className="flex items-center justify-between">
-                <Label className="text-xs text-foreground">Horizontal Orientation</Label>
+                <Label className="text-xs">Horizontal Orientation</Label>
                 <Switch
                   checked={selectedModule.properties?.orientation === "horizontal"}
                   onCheckedChange={(checked) => updateProperty("orientation", checked ? "horizontal" : "vertical")}
@@ -262,7 +262,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
 
             {["earring-flap", "removable-tray"].includes(selectedModule.type) && (
               <div className="flex items-center justify-between">
-                <Label className="text-xs text-foreground">Removable</Label>
+                <Label className="text-xs">Removable</Label>
                 <Switch
                   checked={selectedModule.properties?.isRemovable || false}
                   onCheckedChange={(checked) => updateProperty("isRemovable", checked)}
@@ -272,7 +272,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
 
             {["deep-compartment", "small-compartment"].includes(selectedModule.type) && (
               <div>
-                <Label className="text-xs text-foreground">Compartment Depth</Label>
+                <Label className="text-xs">Compartment Depth</Label>
                 <div className="flex gap-2 mt-2">
                   {["shallow", "medium", "deep"].map((depth) => (
                     <Button
@@ -291,7 +291,7 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
 
             {selectedModule.type === "cover-flap" && (
               <div className="flex items-center justify-between">
-                <Label className="text-xs text-foreground">Has Lock</Label>
+                <Label className="text-xs">Has Lock</Label>
                 <Switch
                   checked={selectedModule.properties?.hasLid || false}
                   onCheckedChange={(checked) => updateProperty("hasLid", checked)}
@@ -302,26 +302,26 @@ export function ObjectPropertiesPanel({ selectedModule, onUpdateModule }: Object
         </Tabs>
 
         {/* Keyboard Shortcuts */}
-        <div className="text-xs text-muted-foreground bg-muted p-2 rounded">
+        <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
           <div className="font-medium mb-1">Keyboard Shortcuts:</div>
           <div className="space-y-1">
             <div>
-              <kbd className="px-1 py-0.5 bg-secondary rounded text-xs">G</kbd> - Grab/Move
+              <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">G</kbd> - Grab/Move
             </div>
             <div>
-              <kbd className="px-1 py-0.5 bg-secondary rounded text-xs">R</kbd> - Rotate
+              <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">R</kbd> - Rotate
             </div>
             <div>
-              <kbd className="px-1 py-0.5 bg-secondary rounded text-xs">S</kbd> - Scale
+              <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">S</kbd> - Scale
             </div>
             <div>
-              <kbd className="px-1 py-0.5 bg-secondary rounded text-xs">X/Y/Z</kbd> - Constrain to axis
+              <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">X/Y/Z</kbd> - Constrain to axis
             </div>
             <div>
-              <kbd className="px-1 py-0.5 bg-secondary rounded text-xs">Del</kbd> - Delete
+              <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">Del</kbd> - Delete
             </div>
             <div>
-              <kbd className="px-1 py-0.5 bg-secondary rounded text-xs">Shift+D</kbd> - Duplicate
+              <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">Shift+D</kbd> - Duplicate
             </div>
           </div>
         </div>
