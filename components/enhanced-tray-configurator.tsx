@@ -56,10 +56,11 @@ export function EnhancedTrayConfigurator() {
   const [designName, setDesignName] = useState("")
   const [showOverview, setShowOverview] = useState(false)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [showModuleMenu, setShowModuleMenu] = useState(false)
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const orbitControlsRef = useRef<any>(null); // Add this line
+  const [showModuleMenu, setShowModuleMenu] = useState(false);
 
-  const designManager = DesignManager.getInstance()
+  const designManager = DesignManager.getInstance();
 
   // Auto-save functionality
   useEffect(() => {
@@ -231,8 +232,14 @@ export function EnhancedTrayConfigurator() {
     console.log(
       "Quote requested for designs:",
       designs.map((d) => d.designCode),
-    )
-  }
+    );
+  };
+
+  const handleResetView = useCallback(() => {
+    if (orbitControlsRef.current) {
+      orbitControlsRef.current.reset();
+    }
+  }, []);
 
   if (showOverview) {
     return (
@@ -321,7 +328,7 @@ export function EnhancedTrayConfigurator() {
 
       {/* Main 3D View */}
       <div className="flex-1 relative">
-        <ViewControls viewMode={viewMode} onViewModeChange={setViewMode} />
+        <ViewControls viewMode={viewMode} onViewModeChange={setViewMode} onResetView={handleResetView} />
 
         {hasUnsavedChanges && (
           <div className="absolute top-4 left-4 z-10">
@@ -387,6 +394,8 @@ export function EnhancedTrayConfigurator() {
             enableRotate={viewMode === "perspective"}
             maxPolarAngle={viewMode === "top" ? 0 : Math.PI / 2}
             minPolarAngle={viewMode === "top" ? 0 : 0}
+            makeDefault // Add this line
+            ref={orbitControlsRef} // Add this line
           />
         </Canvas>
       </div>
